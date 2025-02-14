@@ -45,7 +45,7 @@ app.post('/api/person', (req, res) => {
 
 app.get('/info', (req, res) => {
     var now = new Date();
-    res.status(200).send('Phonebook has info for ' + persons.length + ' people  ' + now);
+    res.status(200).send('Phonebook has info for '  );
 });
 
 app.get('/api/all', async  (request, response) => {
