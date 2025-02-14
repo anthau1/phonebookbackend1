@@ -11,9 +11,9 @@ app.use(cors())
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(express.static('dist1'))
 app.use(bodyParser.json());
 //app.use(morgan());
-
 
 app.post('/api/person', (req, res) => {
     const data = req.body.data;
@@ -28,11 +28,12 @@ app.post('/api/person', (req, res) => {
         res.status(400).json({ error: "Phone number is missing" });
         return
     }
-
+/*
     if(persons.filter(person =>person.name===req.body.name).length>0) {
       res.status(400).json({ error: "Name must be unique" });
         return
     }
+    */
 
    var person={};
     person.name=req.body.name;
