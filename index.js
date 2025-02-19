@@ -1,10 +1,13 @@
-
-
 import Phonebook from "./index1.js";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+
+function errorHandler(err, req, res, next) {
+    console.error("tappara1");
+    res.status(504).json({ error111: "error: " + err.message });
+}
 var app = express();
 
 app.use(cors())
@@ -13,19 +16,30 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('dist1'))
 app.use(bodyParser.json());
-//app.use(morgan());
 
-app.post('/api/person', (req, res) => {
-    const data = req.body.data;
+app.get('/y', (req, res,next) => {
+    next(new Error('Not Found'));
+    //res.send('Hello World!')
+})
+
+
+app.post('/api/person', (req, res,next)  => {
+
+
+     //next(new Error('Not Found').message="antto");
+
     // Send a response back to the client
     if(req.body.name==="")  {
-        res.status(400).json({ error: "Name is missing" });
+        const error = new Error("name is missing");
+        next(error);
         return
-
     }
 
-    if(req.body.phone==="")  {
-        res.status(400).json({ error: "Phone number is missing" });
+    if(req.body.number==="")  {
+        console.log("jes");
+        const error = new Error("Phone number is missing");
+        next(error);
+        //res.status(400).json({ error: "Phone number is missing" });
         return
     }
 /*
@@ -40,7 +54,7 @@ app.post('/api/person', (req, res) => {
     person.number=req.body.number;
     let  book=new Phonebook()
     book.Addrecord(person.name,person.number);
-    res.status(400).json({ error:  "Added " + req.body.name + req.body.number    });
+    res.status(200).json({ message :  "OK : Added " + req.body.name + req.body.number    });
 });
 
 app.get('/info', (req, res) => {
@@ -63,6 +77,10 @@ app.delete('/api/person/:id', (request, response) => {
     book.Deletereord(id)
     response.sendStatus(200);
 })
+
+
+app.use(errorHandler);
+//app.use(morgan());
 
 const PORT = 3001
 
